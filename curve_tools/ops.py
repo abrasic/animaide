@@ -792,6 +792,53 @@ class ANIMAIDE_OT_time_offset(Operator, ANIMAIDE_OT):
 
     def execute(self, context):
         return support.to_execute(self, context, self.tool, context)
+    
+class ANIMAIDE_OT_time_offset_overlap(Operator, ANIMAIDE_OT):
+    """Spreads offsetter based on order of selection"""
+
+    bl_idname = "anim.aide_time_offset_overlap"
+    bl_label = "Time Offset Overlap"
+
+    tool_type = 'TIME_OFFSET_OVERLAP'
+
+    def tool(self, context):
+        bone_order = utils.get_obj_order(self)
+        selected_bones = bone_order[::-1]
+
+        if self.selected_keys:
+            if self.op_context == 'INVOKE_DEFAULT':
+                context.window.workspace.status_text_set(self.display_info)
+
+            cycle = self.animaide.clone.cycle
+
+            clone_name = '%s.%d.clone' % (self.fcurve.data_path, self.fcurve.array_index)
+            clone = utils.curve.duplicate_from_data(self.fcurves,
+                                                    self.global_fcurve,
+                                                    clone_name,
+                                                    before=cycle,
+                                                    after=cycle)
+
+            factor = utils.clamp(self.factor, self.min_value, self.max_value)
+
+            for index in self.selected_keys:
+                if bpy.context.mode == "POSE":
+                    this_bone = self.fcurve.data_path.split('"')[1::2][0] # Return string of bone name to compare with selected bone
+                if bpy.context.mode == "OBJECT":
+                    this_bone = next(o for o in bpy.data.objects if o.animation_data and o.animation_data.action is self.fcurve.id_data).name
+                if this_bone in selected_bones:
+                    index_weight = (selected_bones.index(this_bone) + 1) / len(selected_bones) # Create a weight value from order of array.
+                    k = self.fcurve.keyframe_points[index]
+                    k.co_ui.y = clone.evaluate((k.co.x - 20 * factor/5)+(index_weight*(factor*5)))
+                else:
+                    self.report({'INFO'}, 'Some keys in your selection may not move due to incorrect mode')
+                    continue # Don't change values of keys if the bone their F-Curve is from has not been selected
+            self.fcurves.remove(clone)
+
+        # else:
+        #     self.report({'INFO'}, 'Some selected keys needed for this tool')
+
+    def execute(self, context):
+        return support.to_execute(self, context, self.tool, context)
 
 
 class ANIMAIDE_OT_shear_right(Operator, ANIMAIDE_OT):
@@ -1276,6 +1323,7 @@ classes = (
     ANIMAIDE_OT_smooth,
     ANIMAIDE_OT_wave_noise,
     ANIMAIDE_OT_time_offset,
+    ANIMAIDE_OT_time_offset_overlap,
     ANIMAIDE_OT_shear_left,
     ANIMAIDE_OT_shear_right,
     ANIMAIDE_OT_tween,

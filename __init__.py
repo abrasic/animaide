@@ -62,6 +62,9 @@ classes = \
 def load_post_handler(scene):
     # if support.magnet_handlers in bpy.app.handlers.depsgraph_update_post:
     #     bpy.app.handlers.depsgraph_update_post.remove(support.magnet_handlers)
+
+    if not utils.get_obj_order in bpy.app.handlers.depsgraph_update_post:
+        bpy.app.handlers.depsgraph_update_post.append(utils.get_obj_order) 
     utils.remove_message()
     print('init')
 
@@ -84,6 +87,8 @@ def register():
     bpy.types.GRAPH_MT_editor_menus.append(ui.draw_menu)
     bpy.types.VIEW3D_MT_editor_menus.append(ui.draw_menu)
     # bpy.types.TIME_MT_editor_menus.append(ui.draw_menu)
+
+    bpy.app.handlers.depsgraph_update_post.append(utils.get_obj_order)
 
     if pref.key_manager_ui == 'PANEL':
         prefe.add_key_manager_panel()
@@ -120,6 +125,8 @@ def unregister():
     bpy.types.GRAPH_MT_editor_menus.remove(ui.draw_menu)
     bpy.types.VIEW3D_MT_editor_menus.remove(ui.draw_menu)
     # bpy.types.TIME_MT_editor_menus.remove(ui.draw_menu)
+
+    bpy.app.handlers.depsgraph_update_post.remove(utils.get_obj_order)
 
     if pref.key_manager_ui == 'PANEL':
         prefe.remove_key_manager_panel()

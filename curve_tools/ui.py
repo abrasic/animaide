@@ -236,6 +236,7 @@ class ANIMAIDE_PT_curve_tools:
             col.separator()
             tool_button(context, col, 'push_pull')
             tool_button(context, col, 'time_offset')
+            tool_button(context, col, 'time_offset_overlap')
             tool_button(context, col, 'tween')
             col.separator()
             if context.area.type != 'VIEW_3D':
@@ -250,12 +251,12 @@ class ANIMAIDE_PT_curve_tools:
 
         if context.area.type == 'GRAPH_EDITOR':
             layout.prop(tool, 'sticky_handles', text='Sticky handles')
-            if tool.selector == 'TIME_OFFSET':
-                layout.prop(clone, 'cycle', text='Cicle Options')
+            if tool.selector == 'TIME_OFFSET' or tool.selector == 'TIME_OFFSET_OVERLAP':
+                layout.prop(clone, 'cycle', text='Cycle Options')
             reference_frames(context, layout, tool.selector)
         else:
-            if tool.selector_3d == 'TIME_OFFSET':
-                layout.prop(clone, 'cycle', text='Cicle Options')
+            if tool.selector_3d == 'TIME_OFFSET' or tool.selector == 'TIME_OFFSET_OVERLAP':
+                layout.prop(clone, 'cycle', text='Cycle Options')
             reference_frames(context, layout, tool.selector_3d)
 
 
@@ -365,6 +366,7 @@ class ANIMAIDE_MT_curve_tools(Menu):
             layout.operator('anim.aide_smooth')
         layout.operator('anim.aide_push_pull')
         layout.operator('anim.aide_time_offset')
+        layout.operator('anim.aide_time_offset_overlap')
         layout.operator('anim.aide_tween')
         if context.area.type != 'VIEW_3D':
             layout.operator('anim.aide_wave_noise')
@@ -434,6 +436,7 @@ class ANIMAIDE_MT_pie_curve_tools_b(Menu):
         pie.operator("anim.aide_smooth")
         pie.operator("anim.aide_blend_offset")
         pie.operator("anim.aide_time_offset")
+        pie.operator("anim.aide_time_offset_overlap")
         pie.operator("anim.aide_blend_default")
         pie.operator('anim.aide_blend_infinite')
 
@@ -453,6 +456,7 @@ class ANIMAIDE_MT_pie_curve_tools_3d(Menu):
         pie.operator("anim.aide_scale_left")
         pie.operator("anim.aide_scale_right")
         pie.operator("anim.aide_time_offset")
+        pie.operator("anim.aide_time_offset_overlap")
         pie.operator('anim.aide_blend_infinite')
 
 

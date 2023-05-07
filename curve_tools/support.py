@@ -159,7 +159,7 @@ def to_execute(self, context, function, *args):
                             continue
                         elif under_cursor:
                             self.selected_keys = under_cursor
-                        elif self.tool_type in ('SMOOTH', 'TIME_OFFSET', 'WAVE_NOISE', 'SCALE_AVERAGE'):
+                        elif self.tool_type in ('SMOOTH', 'TIME_OFFSET', 'TIME_OFFSET_OVERLAP', 'WAVE_NOISE', 'SCALE_AVERAGE'):
                             self.report({'WARNING'}, "This tool only works on frames with keys")
                             continue
 

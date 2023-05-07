@@ -23,6 +23,7 @@ import bpy
 import blf
 
 # from curve_tools.support import get_items
+bone_select_order = []
 
 
 def set_animaide_action():
@@ -252,3 +253,25 @@ def remove_message():
     if text_handle:
         bpy.types.SpaceView3D.draw_handler_remove(text_handle, 'WINDOW')
     text_handle = None
+
+def get_obj_order(self):
+    """Retrieves proper order of posebone selection"""
+    global bone_select_order
+    if bpy.context.mode == "POSE":
+        selected = bpy.context.selected_pose_bones
+        active = bpy.context.active_pose_bone
+    elif bpy.context.mode == "OBJECT":
+        selected = bpy.context.selected_objects
+        active = bpy.context.active_object
+
+    bone_select_order = [bone for bone in selected if bone not in bone_select_order] + [bone for bone in bone_select_order if bone in selected]
+    if bone_select_order:
+        s = []
+        for b in bone_select_order:
+            s.append(b.name)
+        if active.name == s[0]:
+            return s[::-1]
+        else:
+            return s
+    else:
+        return []

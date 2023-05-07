@@ -46,10 +46,11 @@ menu_items = [('BLEND_EASE', 'Blend Ease', 'From current to C shape', '', 1),
 
               ('PUSH_PULL', 'Push Pull', 'Overshoots key values', '', 14),
               ('TIME_OFFSET', 'Time Offset', 'Slide fcurve in time without afecting keys frame value', '', 15),
-              ('TWEEN', 'Tween', 'Sets key value using neighbors as reference', '', 16),
+              ('TIME_OFFSET_OVERLAP', 'Time Offset Overlap', 'Spreads offsetter based on order of selection', '', 16),
+              ('TWEEN', 'Tween', 'Sets key value using neighbors as reference', '', 17),
 
-              ('SMOOTH', 'Smooth', 'Smooths out fcurve keys', '', 17),
-              ('WAVE_NOISE', 'Wave-Noise', 'add wave or random values to keys', '', 18)]
+              ('SMOOTH', 'Smooth', 'Smooths out fcurve keys', '', 18),
+              ('WAVE_NOISE', 'Wave-Noise', 'add wave or random values to keys', '', 19)]
 
 
 menu_items_3d = [('BLEND_FRAME', 'Blend Frame', 'From current to set frames', '', 1),
@@ -63,7 +64,8 @@ menu_items_3d = [('BLEND_FRAME', 'Blend Frame', 'From current to set frames', ''
                  ('PUSH_PULL', 'Push Pull', 'Overshoots key values', '', 7),
 
                  ('TIME_OFFSET', 'Time Offset', 'Slide fcurve in time without afecting keys frame value', '', 8),
-                 ('TWEEN', 'Tween', 'Sets key value using neighbors as reference', '', 9)]
+                 ('TIME_OFFSET_OVERLAP', 'Time Offset Overlap', 'Spreads offsetter based on order of selection', '', 9),
+                 ('TWEEN', 'Tween', 'Sets key value using neighbors as reference', '', 10)]
 
 
 def update_clone_move(self, context):
